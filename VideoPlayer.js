@@ -161,7 +161,7 @@ export default class VideoPlayer extends Component {
     };
   }
 
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     const {isFullscreen} = this.props;
 
     if (prevProps.isFullscreen !== isFullscreen) {
@@ -1003,22 +1003,43 @@ export default class VideoPlayer extends Component {
    */
   renderVolume() {
     return (
-      <View style={styles.volume.container}>
-        <View
-          style={[styles.volume.fill, {width: this.state.volumeFillWidth}]}
-        />
-        <View
-          style={[styles.volume.track, {width: this.state.volumeTrackWidth}]}
-        />
-        <View
-          style={[styles.volume.handle, {left: this.state.volumePosition}]}
-          {...this.player.volumePanResponder.panHandlers}>
-          <Image
-            style={styles.volume.icon}
-            source={require('./assets/img/volume.png')}
-          />
-        </View>
-      </View>
+      <>
+        {this.state.muted ? (
+          <TouchableOpacity
+            hitSlop={{top: 20, right: 20, bottom: 20, left: 20}}
+            onPress={() => {
+              this.setState({muted: false});
+            }}>
+            <Image
+              style={styles.volume.icon}
+              source={require('./assets/img/volume.png')}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.volume.container}>
+            <View
+              style={[styles.volume.fill, {width: this.state.volumeFillWidth}]}
+            />
+            <View
+              style={[
+                styles.volume.track,
+                {width: this.state.volumeTrackWidth},
+              ]}
+            />
+            <View
+              style={[styles.volume.handle, {left: this.state.volumePosition}]}
+              {...this.player.volumePanResponder.panHandlers}>
+              <TouchableOpacity
+                hitSlop={{top: 20, right: 20, bottom: 20, left: 20}}>
+                <Image
+                  style={styles.volume.icon}
+                  source={require('./assets/img/volume.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </>
     );
   }
 
@@ -1087,7 +1108,7 @@ export default class VideoPlayer extends Component {
         {...this.player.seekPanResponder.panHandlers}>
         <View
           style={styles.seekbar.track}
-          onLayout={event =>
+          onLayout={(event) =>
             (this.player.seekerWidth = event.nativeEvent.layout.width)
           }
           pointerEvents={'none'}>
@@ -1217,7 +1238,7 @@ export default class VideoPlayer extends Component {
         <View style={[styles.player.container, this.styles.containerStyle]}>
           <Video
             {...this.props}
-            ref={videoPlayer => (this.player.ref = videoPlayer)}
+            ref={(videoPlayer) => (this.player.ref = videoPlayer)}
             resizeMode={this.state.resizeMode}
             volume={this.state.volume}
             paused={this.state.paused}
