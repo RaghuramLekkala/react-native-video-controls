@@ -955,6 +955,8 @@ export default class VideoPlayer extends Component {
       : this.renderBack();
     const volumeControl = this.props.disableVolume
       ? this.renderNullControl()
+      : this.state.muted
+      ? this.renderMute()
       : this.renderVolume();
     const fullscreenControl = this.props.disableFullscreen
       ? this.renderNullControl()
@@ -1041,6 +1043,26 @@ export default class VideoPlayer extends Component {
           </View>
         )}
       </>
+    );
+  }
+
+  renderMute() {
+    return (
+      <View style={styles.volume.container}>
+        <View
+          style={[styles.volume.handle, {left: this.state.volumePosition}]}
+          {...this.player.volumePanResponder.panHandlers}>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({muted: !this.state.muted});
+            }}>
+            <Image
+              style={styles.volume.icon}
+              source={require('./assets/img/volume.png')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 
